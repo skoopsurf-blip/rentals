@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>賃貸物件検索結果</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Hiragino Sans", "Yu Gothic", sans-serif; background: #f5f5f5; color: #333; }
+
+  header {
+    background: #2c5282;
+    color: white;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  header h1 { font-size: 1.3rem; font-weight: 700; }
+  header .count { font-size: 0.95rem; opacity: 0.85; }
+  header .updated-at { font-size: 0.8rem; opacity: 0.7; margin-top: 2px; }
+
+  .controls {
+    background: white;
+    padding: 14px 24px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  }
+  .controls label { font-size: 0.85rem; color: #555; font-weight: 600; }
+  select, input[type="text"] {
+    padding: 6px 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    background: #f7fafc;
+    cursor: pointer;
+  }
+  select:focus, input:focus { outline: none; border-color: #4299e1; }
+  .sort-btn {
+    padding: 6px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .sort-btn:hover, .sort-btn.active { background: #ebf8ff; border-color: #4299e1; color: #2b6cb0; }
+  .result-count { margin-left: auto; font-size: 0.88rem; color: #666; }
+
+  .table-wrap { padding: 16px 24px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+  th {
+    background: #edf2f7;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #4a5568;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  th:hover { background: #e2e8f0; }
+  th .sort-arrow { margin-left: 4px; opacity: 0.4; }
+  th.sorted .sort-arrow { opacity: 1; color: #2b6cb0; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.88rem; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f7faff; }
+
+  .site-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .site-SUUMO { background: #fff3cd; color: #856404; }
+  .site-HOMES { background: #d4edda; color: #155724; }
+  .site-athome { background: #d1ecf1; color: #0c5460; }
+  .site-kensakun { background: #f8d7da; color: #721c24; }
+
+  .rent-cell { font-weight: 700; color: #2d3748; white-space: nowrap; }
+  .manage-cell { white-space: nowrap; color: #555; }
+  .total-cell { font-weight: 700; white-space: nowrap; }
+  .rent-low { color: #276749; }
+  .rent-mid { color: #744210; }
+  .rent-high { color: #742a2a; }
+
+  .madori-cell { white-space: nowrap; font-weight: 600; color: #434190; }
+  .station-cell { white-space: nowrap; }
+  .floor-cell { white-space: nowrap; color: #555; }
+  .name-cell { max-width: 220px; }
+  .addr-cell { font-size: 0.82rem; color: #666; max-width: 200px; }
+  .parking-cell { white-space: nowrap; }
+  .parking-none { color: #888; }
+  .parking-unknown { color: #c05621; font-weight: 600; background: #fffaf0; padding: 1px 6px; border-radius: 3px; border: 1px solid #fbd38d; font-size: 0.8rem; }
+
+  a.detail-link {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    white-space: nowrap;
+    border: 1px solid #bee3f8;
+  }
+  a.detail-link:hover { background: #bee3f8; }
+
+  .hidden { display: none; }
+  .no-results { padding: 40px; text-align: center; color: #999; font-size: 0.95rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>賃貸物件検索結果</h1>
+    <div class="count" id="header-count">読み込み中...</div>
+    <div class="updated-at">最終更新: 2026年05月05日 04:26</div>
+  </div>
+</header>
+
+<div class="controls">
+  <label>サイト</label>
+  <select id="filter-site">
+    <option value="">全て</option>
+    <option value="SUUMO">SUUMO</option>
+    <option value="けんさくん">けんさくん</option>
+    <option value="HOME'S">HOME'S</option>
+    <option value="athome">athome</option>
+  </select>
+
+  <label>駅</label>
+  <select id="filter-station">
+    <option value="">全て</option>
+    <option value="バスセンター前">バスセンター前</option>
+    <option value="菊水">菊水</option>
+    <option value="東札幌">東札幌</option>
+    <option value="白石">白石</option>
+    <option value="南郷7丁目">南郷7丁目</option>
+    <option value="南郷13丁目">南郷13丁目</option>
+    <option value="南郷18丁目">南郷18丁目</option>
+  </select>
+
+  <label>間取り</label>
+  <select id="filter-madori">
+    <option value="">全て</option>
+    <option value="2DK">2DK</option>
+    <option value="2LDK">2LDK</option>
+    <option value="3DK">3DK</option>
+    <option value="3LDK">3LDK</option>
+  </select>
+
+  <label>合計上限</label>
+  <select id="filter-rent">
+    <option value="0">上限なし</option>
+    <option value="60000">6万円以下</option>
+    <option value="65000">6.5万円以下</option>
+    <option value="70000">7万円以下</option>
+    <option value="75000">7.5万円以下</option>
+    <option value="80000">8万円以下</option>
+  </select>
+
+  <span class="result-count" id="result-count"></span>
+</div>
+
+<div class="table-wrap">
+  <table id="result-table">
+    <thead>
+      <tr>
+        <th data-col="site">サイト <span class="sort-arrow">↕</span></th>
+        <th data-col="station">駅 <span class="sort-arrow">↕</span></th>
+        <th data-col="name">物件名 <span class="sort-arrow">↕</span></th>
+        <th data-col="address">住所 <span class="sort-arrow">↕</span></th>
+        <th data-col="madori">間取り <span class="sort-arrow">↕</span></th>
+        <th data-col="rent_num">家賃 <span class="sort-arrow">↕</span></th>
+        <th data-col="manage_fee">管理費 <span class="sort-arrow">↕</span></th>
+        <th data-col="parking_fee">駐車場 <span class="sort-arrow">↕</span></th>
+        <th data-col="total">合計 <span class="sort-arrow">↕</span></th>
+        <th data-col="floor">階数 <span class="sort-arrow">↕</span></th>
+        <th>詳細</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+  <div class="no-results hidden" id="no-results">条件に合う物件が見つかりませんでした</div>
+</div>
+
+<script>
+const DATA_JSON = `[{"site": "SUUMO", "station": "白石", "name": "ルナパレス17", "address": "北海道札幌市白石区栄通１７", "madori": "2LDK", "rent": "6.3万円", "manage_fee": 2000, "total": 73800, "floor": "3階", "url": "https://suumo.jp/chintai/jnc_000106320693/?bc=100502055328", "parking_fee": 8800, "parking_note": "", "gas_ok": true}, {"site": "SUUMO", "station": "白石", "name": "地下鉄東西線 南郷１８丁目駅 3階建 築14年", "address": "北海道札幌市白石区栄通１７", "madori": "2LDK", "rent": "6.3万円", "manage_fee": 2000, "total": 73800, "floor": "3階", "url": "https://suumo.jp/chintai/jnc_000106754949/?bc=100503196020", "parking_fee": 8800, "parking_note": "", "gas_ok": true}, {"site": "けんさくん", "station": "南郷7丁目", "name": "南郷１３丁目 徒歩9分 築16年2LDK木造アパート", "address": "札幌市白石区本通１２丁目南", "madori": "2LDK", "rent": "7.0万円", "manage_fee": 2000, "total": 72000, "floor": "", "url": "https://www.kensakun.net/app/search/detail/station/3581065", "parking_fee": -1, "parking_note": "有無確認必要", "gas_ok": true}, {"site": "けんさくん", "station": "南郷13丁目", "name": "南郷１３丁目 徒歩9分 築16年2LDK木造アパート", "address": "札幌市白石区本通１２丁目南", "madori": "2LDK", "rent": "7.0万円", "manage_fee": 2000, "total": 72000, "floor": "", "url": "https://www.kensakun.net/app/search/detail/station/3581065", "parking_fee": -1, "parking_note": "有無確認必要", "gas_ok": true}]`;
+
+const SITE_CLASS = {
+  'SUUMO': 'site-SUUMO',
+  "HOME'S": 'site-HOMES',
+  'athome': 'site-athome',
+  'けんさくん': 'site-kensakun'
+};
+
+function parseRent(rentStr) {
+  const m = rentStr.match(/([\d.]+)万/);
+  return m ? Math.round(parseFloat(m[1]) * 10000) : 0;
+}
+
+function fmtYen(num) {
+  if (!num) return '-';
+  if (num >= 10000) return (num / 10000).toFixed(1).replace('.0', '') + '万円';
+  return num.toLocaleString() + '円';
+}
+
+function fmtParking(fee, note) {
+  if (fee === 0) return '<span class="parking-none">なし</span>';
+  if (fee > 0) return fmtYen(fee);
+  const label = note || '要確認';
+  return `<span class="parking-unknown">${label}</span>`;
+}
+
+function rentClass(num) {
+  if (num <= 65000) return 'rent-low';
+  if (num <= 75000) return 'rent-mid';
+  return 'rent-high';
+}
+
+let allData = [];
+let sortCol = 'total';
+let sortAsc = true;
+
+function buildRows(data) {
+  return data.map(item => {
+    const rentNum = parseRent(item.rent);
+    const manageNum = item.manage_fee || 0;
+    const totalNum = item.total || (rentNum + manageNum);
+    const parkingFee = item.parking_fee !== undefined ? item.parking_fee : -1;
+    const parkingNote = item.parking_note || '';
+    return { ...item, rent_num: rentNum, manage_fee: manageNum, total: totalNum, parking_fee: parkingFee, parking_note: parkingNote };
+  });
+}
+
+function renderTable() {
+  const site = document.getElementById('filter-site').value;
+  const station = document.getElementById('filter-station').value;
+  const madori = document.getElementById('filter-madori').value;
+  const rentLimit = parseInt(document.getElementById('filter-rent').value) || 0;
+
+  let filtered = allData.filter(r => {
+    if (site && r.site !== site) return false;
+    if (station && r.station !== station) return false;
+    if (madori && r.madori !== madori) return false;
+    if (rentLimit > 0 && r.total > rentLimit) return false;
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (typeof va === 'string') va = va.replace(/[Ａ-Ｚａ-ｚ０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+    if (typeof vb === 'string') vb = vb.replace(/[Ａ-Ｚａ-ｚ０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+    if (va < vb) return sortAsc ? -1 : 1;
+    if (va > vb) return sortAsc ? 1 : -1;
+    return 0;
+  });
+
+  const tbody = document.getElementById('table-body');
+  const noResults = document.getElementById('no-results');
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    noResults.classList.remove('hidden');
+  } else {
+    noResults.classList.add('hidden');
+    tbody.innerHTML = filtered.map((r, i) => {
+      const rc = rentClass(r.total);
+      const siteCls = SITE_CLASS[r.site] || '';
+      const rentDisp = r.rent_num ? fmtYen(r.rent_num) : r.rent;
+      const manageDisp = r.manage_fee ? fmtYen(r.manage_fee) : '-';
+      const parkingDisp = fmtParking(r.parking_fee, r.parking_note);
+      const totalDisp = fmtYen(r.total);
+      return `<tr>
+        <td><span class="site-badge ${siteCls}">${r.site}</span></td>
+        <td class="station-cell">${r.station}</td>
+        <td class="name-cell">${r.name}</td>
+        <td class="addr-cell">${r.address || '-'}</td>
+        <td class="madori-cell">${r.madori}</td>
+        <td class="rent-cell">${rentDisp}</td>
+        <td class="manage-cell">${manageDisp}</td>
+        <td class="parking-cell">${parkingDisp}</td>
+        <td class="total-cell ${rc}">${totalDisp}</td>
+        <td class="floor-cell">${r.floor || '-'}</td>
+        <td>${r.url ? `<a class="detail-link" href="${r.url}" target="_blank">詳細</a>` : '-'}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('result-count').textContent = `${filtered.length}件表示`;
+}
+
+// ソートヘッダー
+document.querySelectorAll('th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (sortCol === col) sortAsc = !sortAsc;
+    else { sortCol = col; sortAsc = true; }
+    document.querySelectorAll('th').forEach(t => t.classList.remove('sorted'));
+    th.classList.add('sorted');
+    th.querySelector('.sort-arrow').textContent = sortAsc ? '↑' : '↓';
+    renderTable();
+  });
+});
+
+// フィルター
+['filter-site','filter-station','filter-madori','filter-rent'].forEach(id => {
+  document.getElementById(id).addEventListener('change', renderTable);
+});
+
+// データ読み込み
+try {
+  const raw = JSON.parse(DATA_JSON);
+  allData = buildRows(raw);
+  document.getElementById('header-count').textContent = `合計 ${allData.length}件`;
+  document.querySelector('th[data-col="total"]').classList.add('sorted');
+  renderTable();
+} catch(e) {
+  // [{"site": "SUUMO", "station": "白石", "name": "ルナパレス17", "address": "北海道札幌市白石区栄通１７", "madori": "2LDK", "rent": "6.3万円", "manage_fee": 2000, "total": 73800, "floor": "3階", "url": "https://suumo.jp/chintai/jnc_000106320693/?bc=100502055328", "parking_fee": 8800, "parking_note": "", "gas_ok": true}, {"site": "SUUMO", "station": "白石", "name": "地下鉄東西線 南郷１８丁目駅 3階建 築14年", "address": "北海道札幌市白石区栄通１７", "madori": "2LDK", "rent": "6.3万円", "manage_fee": 2000, "total": 73800, "floor": "3階", "url": "https://suumo.jp/chintai/jnc_000106754949/?bc=100503196020", "parking_fee": 8800, "parking_note": "", "gas_ok": true}, {"site": "けんさくん", "station": "南郷7丁目", "name": "南郷１３丁目 徒歩9分 築16年2LDK木造アパート", "address": "札幌市白石区本通１２丁目南", "madori": "2LDK", "rent": "7.0万円", "manage_fee": 2000, "total": 72000, "floor": "", "url": "https://www.kensakun.net/app/search/detail/station/3581065", "parking_fee": -1, "parking_note": "有無確認必要", "gas_ok": true}, {"site": "けんさくん", "station": "南郷13丁目", "name": "南郷１３丁目 徒歩9分 築16年2LDK木造アパート", "address": "札幌市白石区本通１２丁目南", "madori": "2LDK", "rent": "7.0万円", "manage_fee": 2000, "total": 72000, "floor": "", "url": "https://www.kensakun.net/app/search/detail/station/3581065", "parking_fee": -1, "parking_note": "有無確認必要", "gas_ok": true}] が置換されていない（スクリプト未実行）か JSON エラー
+  const notReady = DATA_JSON.trim() === 'DATA' + '_PLACEHOLDER';
+  if (notReady) {
+    document.getElementById('table-body').innerHTML = '<tr><td colspan="11" style="padding:40px;text-align:center;color:#999;">search_rentals.py を実行するとデータが反映されます</td></tr>';
+    document.getElementById('header-count').textContent = 'データなし';
+  } else {
+    document.getElementById('table-body').innerHTML = '<tr><td colspan="11">データ読み込みエラー: ' + e.message + '</td></tr>';
+  }
+}
+</script>
+</body>
+</html>
