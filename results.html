@@ -129,7 +129,7 @@
   <div>
     <h1>賃貸物件検索結果</h1>
     <div class="count" id="header-count">読み込み中...</div>
-    <div class="updated-at">最終更新: 2026年07月29日 05:09</div>
+    <div class="updated-at">最終更新: 2026年07月30日 05:09</div>
   </div>
 </header>
 
@@ -204,7 +204,7 @@
 </div>
 
 <script>
-const DATA_JSON = `[{"site": "SUUMO", "station": "白石", "name": "コンフォート平野", "address": "北海道札幌市白石区平和通８丁目北", "madori": "2LDK", "area_sqm": 56.93, "rent": "6.6万円", "manage_fee": 3000, "total": 79000, "floor": "2階", "age_years": 19, "walk_min": 10, "url": "https://suumo.jp/chintai/jnc_000107902470/?bc=100514169687", "parking_fee": -1, "parking_note": "有", "gas_type": null, "heating": "灯油", "has_aircon": true, "parking_cost": 10000, "parking_estimated": true, "floor_num": 2, "surface_rent": 79000, "utility_adj": 1500, "jisshitsu_rent": 80500, "score_rent": 18.0, "score_age": 13.8, "score_walk": 15.0, "score_gas": 7.5, "score": 54.2}, {"site": "SUUMO", "station": "東札幌", "name": "ＪＲ函館本線 白石駅 4階建 築14年", "address": "北海道札幌市白石区中央三条６", "madori": "2LDK", "area_sqm": 55.46, "rent": "6.5万円", "manage_fee": 3000, "total": 80000, "floor": "2階", "age_years": 14, "walk_min": 13, "url": "https://suumo.jp/chintai/jnc_000108197701/?bc=100514810267", "parking_fee": 12000, "parking_note": "", "gas_type": null, "heating": "灯油", "has_aircon": true, "parking_cost": 12000, "parking_estimated": false, "floor_num": 2, "surface_rent": 80000, "utility_adj": 1500, "jisshitsu_rent": 81500, "score_rent": 14.0, "score_age": 20.0, "score_walk": 12.0, "score_gas": 7.5, "score": 53.5}]`;
+const DATA_JSON = `[{"site": "SUUMO", "station": "東札幌", "name": "ＪＲ函館本線 白石駅 4階建 築14年", "address": "北海道札幌市白石区中央三条６", "madori": "2LDK", "area_sqm": 55.46, "rent": "6.5万円", "manage_fee": 3000, "total": 80000, "floor": "2階", "age_years": 14, "walk_min": 13, "url": "https://suumo.jp/chintai/jnc_000108197701/?bc=100514810267", "parking_fee": 12000, "parking_note": "", "gas_type": null, "heating": "灯油", "has_aircon": true, "parking_cost": 12000, "parking_estimated": false, "floor_num": 2, "surface_rent": 80000, "utility_adj": 1500, "jisshitsu_rent": 81500, "score_rent": 14.0, "score_age": 20.0, "score_walk": 12.0, "score_gas": 7.5, "score": 53.5}]`;
 
 const SITE_CLASS = {
   'SUUMO': 'site-SUUMO',
@@ -374,7 +374,7 @@ try {
   sortedTh.querySelector('.sort-arrow').textContent = sortAsc ? '↑' : '↓';
   renderTable();
 } catch(e) {
-  // [{"site": "SUUMO", "station": "白石", "name": "コンフォート平野", "address": "北海道札幌市白石区平和通８丁目北", "madori": "2LDK", "area_sqm": 56.93, "rent": "6.6万円", "manage_fee": 3000, "total": 79000, "floor": "2階", "age_years": 19, "walk_min": 10, "url": "https://suumo.jp/chintai/jnc_000107902470/?bc=100514169687", "parking_fee": -1, "parking_note": "有", "gas_type": null, "heating": "灯油", "has_aircon": true, "parking_cost": 10000, "parking_estimated": true, "floor_num": 2, "surface_rent": 79000, "utility_adj": 1500, "jisshitsu_rent": 80500, "score_rent": 18.0, "score_age": 13.8, "score_walk": 15.0, "score_gas": 7.5, "score": 54.2}, {"site": "SUUMO", "station": "東札幌", "name": "ＪＲ函館本線 白石駅 4階建 築14年", "address": "北海道札幌市白石区中央三条６", "madori": "2LDK", "area_sqm": 55.46, "rent": "6.5万円", "manage_fee": 3000, "total": 80000, "floor": "2階", "age_years": 14, "walk_min": 13, "url": "https://suumo.jp/chintai/jnc_000108197701/?bc=100514810267", "parking_fee": 12000, "parking_note": "", "gas_type": null, "heating": "灯油", "has_aircon": true, "parking_cost": 12000, "parking_estimated": false, "floor_num": 2, "surface_rent": 80000, "utility_adj": 1500, "jisshitsu_rent": 81500, "score_rent": 14.0, "score_age": 20.0, "score_walk": 12.0, "score_gas": 7.5, "score": 53.5}] が置換されていない（スクリプト未実行）か JSON エラー
+  // [{"site": "SUUMO", "station": "東札幌", "name": "ＪＲ函館本線 白石駅 4階建 築14年", "address": "北海道札幌市白石区中央三条６", "madori": "2LDK", "area_sqm": 55.46, "rent": "6.5万円", "manage_fee": 3000, "total": 80000, "floor": "2階", "age_years": 14, "walk_min": 13, "url": "https://suumo.jp/chintai/jnc_000108197701/?bc=100514810267", "parking_fee": 12000, "parking_note": "", "gas_type": null, "heating": "灯油", "has_aircon": true, "parking_cost": 12000, "parking_estimated": false, "floor_num": 2, "surface_rent": 80000, "utility_adj": 1500, "jisshitsu_rent": 81500, "score_rent": 14.0, "score_age": 20.0, "score_walk": 12.0, "score_gas": 7.5, "score": 53.5}] が置換されていない（スクリプト未実行）か JSON エラー
   const notReady = DATA_JSON.trim() === 'DATA' + '_PLACEHOLDER';
   if (notReady) {
     document.getElementById('table-body').innerHTML = '<tr><td colspan="13" style="padding:40px;text-align:center;color:#999;">search_rentals.py を実行するとデータが反映されます</td></tr>';
