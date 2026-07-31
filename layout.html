@@ -1,0 +1,775 @@
+<title>OBRI 302 リビング＋編集スペースの配置</title>
+<style>
+  :root{--bg:#F4F6F8;--surface:#FFF;--surface-2:#EDF1F4;--ink:#171C22;--ink-2:#46525E;--muted:#6E7C89;--line:#D8DFE6;--line-soft:#E7ECF1;--accent:#0E5A62;--accent-soft:#DCEBEC;--ok:#1F6B45;--ok-soft:#DDEEE4;--warn:#8A6410;--warn-soft:#F5EAD1;--stop:#A5342A;--stop-soft:#F7E1DE;--shadow:0 1px 2px rgba(23,28,34,.06),0 8px 24px -16px rgba(23,28,34,.28);}
+  @media (prefers-color-scheme:dark){:root{--bg:#10151A;--surface:#182028;--surface-2:#1F2831;--ink:#E4EAEF;--ink-2:#B3C0CB;--muted:#8695A2;--line:#2C3742;--line-soft:#232D37;--accent:#5FBDC4;--accent-soft:#16333A;--ok:#6FC496;--ok-soft:#16301F;--warn:#D9AE55;--warn-soft:#33290F;--stop:#E58B80;--stop-soft:#37201D;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.8);}}
+  :root[data-theme="light"]{--bg:#F4F6F8;--surface:#FFF;--surface-2:#EDF1F4;--ink:#171C22;--ink-2:#46525E;--muted:#6E7C89;--line:#D8DFE6;--line-soft:#E7ECF1;--accent:#0E5A62;--accent-soft:#DCEBEC;--ok:#1F6B45;--ok-soft:#DDEEE4;--warn:#8A6410;--warn-soft:#F5EAD1;--stop:#A5342A;--stop-soft:#F7E1DE;--shadow:0 1px 2px rgba(23,28,34,.06),0 8px 24px -16px rgba(23,28,34,.28);}
+  :root[data-theme="dark"]{--bg:#10151A;--surface:#182028;--surface-2:#1F2831;--ink:#E4EAEF;--ink-2:#B3C0CB;--muted:#8695A2;--line:#2C3742;--line-soft:#232D37;--accent:#5FBDC4;--accent-soft:#16333A;--ok:#6FC496;--ok-soft:#16301F;--warn:#D9AE55;--warn-soft:#33290F;--stop:#E58B80;--stop-soft:#37201D;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.8);}
+
+  body{background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP","Meiryo",system-ui,sans-serif;font-size:16px;line-height:1.8;-webkit-text-size-adjust:100%;font-feature-settings:"palt" 1;}
+  .wrap{max-width:46rem;margin:0 auto;padding:2rem 1.15rem 5rem;display:flex;flex-direction:column;gap:2.5rem;}
+  .head{display:flex;flex-direction:column;gap:.8rem;}
+  .eyebrow{font-size:.72rem;letter-spacing:.18em;color:var(--muted);font-weight:700;}
+  h1{font-size:clamp(1.55rem,6vw,2.1rem);line-height:1.3;font-weight:800;letter-spacing:-.02em;text-wrap:balance;margin:0;}
+  section{display:flex;flex-direction:column;gap:1rem;}
+  h2{font-size:1.1rem;font-weight:800;margin:0;padding:.45rem .75rem;border-radius:3px;background:var(--accent);color:#fff;display:flex;align-items:baseline;gap:.55rem;flex-wrap:wrap;}
+  h2.pick{background:var(--ok);}
+  h2.warn{background:var(--stop);}
+  h2 .n{font-size:.7rem;font-weight:700;opacity:.78;letter-spacing:.1em;}
+  h3{font-size:.92rem;font-weight:800;margin:.3rem 0 0;color:var(--ink-2);}
+  p{margin:0;}
+  .lead{color:var(--ink-2);font-size:.93rem;}
+  .note{background:var(--surface-2);border-radius:3px;padding:.75rem .9rem;font-size:.86rem;color:var(--ink-2);}
+  .note b{color:var(--ink);}
+  .flag{background:var(--warn-soft);border-radius:3px;padding:.75rem .9rem;font-size:.86rem;color:var(--ink-2);}
+  .flag b{color:var(--ink);}
+  .stopbox{background:var(--stop-soft);border-radius:3px;padding:.75rem .9rem;font-size:.86rem;color:var(--ink-2);}
+  .stopbox b{color:var(--ink);}
+  ul,ol{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:.35rem;}
+  li{padding-left:.1rem;}
+  li::marker{color:var(--muted);}
+
+  .plan{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1rem .5rem;box-shadow:var(--shadow);display:flex;justify-content:center;overflow-x:auto;}
+  svg{max-width:100%;height:auto;display:block;}
+  .room{fill:var(--surface);stroke:var(--ink-2);stroke-width:3;}
+  .wallband{fill:var(--surface-2);stroke:var(--line);stroke-width:1;}
+  .furn{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2;}
+  .furn2{fill:var(--warn-soft);stroke:var(--warn);stroke-width:2;}
+  .furn3{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2;}
+  .hot{fill:var(--stop-soft);stroke:var(--stop);stroke-width:2;}
+  .free{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:7 5;}
+  .danger{fill:none;stroke:var(--stop);stroke-width:1.5;stroke-dasharray:5 4;}
+  .lbl{fill:var(--ink);font-size:13px;font-weight:700;text-anchor:middle;dominant-baseline:middle;}
+  .lbl-s{fill:var(--ink-2);font-size:10.5px;text-anchor:middle;dominant-baseline:middle;}
+  .edge{fill:var(--muted);font-size:11px;font-weight:700;text-anchor:middle;}
+  .dim{fill:var(--muted);font-size:10.5px;text-anchor:middle;}
+
+  .tw{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface);}
+  table{border-collapse:collapse;width:100%;font-size:.85rem;}
+  th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line-soft);}
+  th{background:var(--surface-2);font-weight:800;font-size:.78rem;color:var(--ink-2);white-space:nowrap;}
+  td.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
+  td.ok{color:var(--ok);font-weight:800;}
+  td.ng{color:var(--stop);font-weight:800;}
+  tbody tr:last-child td,tbody tr:last-child th{border-bottom:0;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+  @media(max-width:560px){.two{grid-template-columns:1fr;}}
+  .box{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:.8rem .9rem;font-size:.87rem;display:flex;flex-direction:column;gap:.4rem;}
+  .box.good{border-left:4px solid var(--ok);}
+  .box.bad{border-left:4px solid var(--stop);}
+  .box b{font-size:.82rem;letter-spacing:.04em;}
+  .legend{display:flex;gap:.9rem;flex-wrap:wrap;font-size:.76rem;color:var(--muted);}
+  .key{display:inline-flex;align-items:center;gap:.3rem;}
+  .sw{width:.8rem;height:.8rem;border-radius:2px;display:inline-block;}
+  .foot{border-top:1px solid var(--line);padding-top:1rem;font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:.4rem;}
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">OBRI NANGO 302 ／ LD9 + K2.5</div>
+    <h1>リビング＋編集スペースの配置</h1>
+    <div class="note">
+      <b>動画編集のデスクをリビングに置く前提</b>で組み直しました。LD9は約3.3m × 4.5m（14.9㎡）＋対面キッチン2.5帖。<br>
+      <b>ソファ・レンジ台・カラーボックスは処分済み</b>で、冷蔵庫は<b>600 × 672 × 1724mm</b>を持ち込みます。
+    </div>
+    <div class="legend">
+      <span class="key"><span class="sw" style="background:var(--accent-soft);border:2px solid var(--accent)"></span>今ある家具</span>
+      <span class="key"><span class="sw" style="background:var(--warn-soft);border:2px solid var(--warn)"></span>買い足し</span>
+      <span class="key"><span class="sw" style="background:var(--ok-soft);border:2px solid var(--ok)"></span>設備</span>
+      <span class="key"><span class="sw" style="background:var(--stop-soft);border:2px solid var(--stop)"></span>熱源・危険</span>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="pick"><span class="n">決定</span>部屋割りと譲れない条件</h2>
+    <p class="lead">5つの条件を前提に組みました。<b>寝室はリビング隣の洋6.4</b>です。</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>譲れない条件</th><th>反映</th></tr></thead>
+        <tbody>
+          <tr><th>キッチン前はダイニング</th><td class="ok">○ 北・カウンター前に配置</td></tr>
+          <tr><th>冷蔵庫の設置位置をはっきり</th><td class="ng">△ <b>図面に明示なし。下記参照</b></td></tr>
+          <tr><th>ソファあり</th><td class="ok">○ 2人掛け150cm・西壁</td></tr>
+          <tr><th>リビングにPCデスク</th><td class="ok">○ 西壁の南端</td></tr>
+          <tr><th><b>リビングの隣が寝室</b>（エアコンがリビング）</th><td class="ok">○ <b>洋6.4を寝室に</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <b>エアコンがリビングにしか設置できないので、寝室はリビング隣が正解です。</b>引き戸1.6mは遮音のマイナスではなく、<b>冷気を寝室へ送る通路</b>として機能します。夏の夜にエアコンのない部屋で寝るリスクを避けられます。<br><br>
+      洋5.1（玄関側）は<b>納戸・衣類収納・将来の子ども部屋</b>に回します。
+    </div>
+
+    <h3>引き換えに、深夜作業の音対策が必要です</h3>
+    <div class="stopbox">
+      <b>深夜帯にリビングでPC作業をする</b>のに、寝室が隣になります。<b>夏はエアコンのために引き戸を開ける</b>ので、そこは割り切りが要ります。設備で減らします。
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>対策</th><th>効果</th></tr></thead>
+        <tbody>
+          <tr><th><b>デスクを引き戸の正面から外す</b></th><td>この配置の核。西壁の南端に置くことで、引き戸（東壁の中央）と正対しない</td></tr>
+          <tr><th><b>静音キーボードに替える</b></th><td>打鍵音が最大の音源。数千円で大きく変わる</td></tr>
+          <tr><th>モニターの輝度を下げ暖色寄りに</th><td>光漏れ対策。編集用と就寝時間帯用でプロファイルを切り替える</td></tr>
+          <tr><th>デスクライトは手元だけ照らすものに</th><td>部屋全体を明るくしない</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="warn"><span class="n">要確認</span>冷蔵庫の置き場所は図面に明示がありません</h2>
+    <p class="lead">K2.5を拡大して確認しましたが、<b>「冷」マークも冷蔵庫置場の点線もありませんでした。</b>シンクとカウンターだけが描かれています。</p>
+
+    <div class="plan">
+      <svg viewBox="0 0 340 300" width="340" role="img" aria-label="K2.5の構成">
+        <rect class="room" x="40" y="30" width="240" height="230"/>
+        <text class="edge" x="160" y="22">UT・浴室側（北）</text>
+        <text class="edge" x="160" y="285">LD9側（南）</text>
+        <rect class="wallband" x="40" y="120" width="10" height="60"/>
+        <text class="edge" x="22" y="150" transform="rotate(-90 22 150)">窓</text>
+
+        <rect class="furn3" x="50" y="35" width="160" height="62" rx="3" style="stroke-dasharray:5 4"/>
+        <text class="lbl-s" x="130" y="55">冷蔵庫置場（推定）</text>
+        <text class="lbl-s" x="130" y="74">壁 約1.6m</text>
+        <text class="lbl-s" x="130" y="90">600×672×1724 が入るか要確認</text>
+
+        <rect class="furn" x="50" y="200" width="215" height="55" rx="3"/>
+        <text class="lbl-s" x="105" y="228">調理台</text>
+        <rect class="furn" x="150" y="212" width="70" height="32" rx="4"/>
+        <text class="lbl-s" x="185" y="228">シンク</text>
+        <text class="lbl-s" x="240" y="228">コンロ台</text>
+        <text class="dim" x="160" y="272">対面カウンター 奥行65cm</text>
+      </svg>
+    </div>
+
+    <h3>面積は足ります。問題は高さと搬入経路です</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>項目</th><th class="num">数値</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr><th>K2.5 の床面積</th><td class="num">約 4.05㎡</td><td>—</td></tr>
+          <tr><th>カウンターが占める分（奥行65cm）</th><td class="num">約 1.1㎡</td><td>—</td></tr>
+          <tr><th><b>残る空きスペース</b></th><td class="num"><b>約 2.9㎡</b></td><td>—</td></tr>
+          <tr><th>冷蔵庫の接地面（600 × 672）</th><td class="num">0.40㎡</td><td class="ok">○ 面積は余裕</td></tr>
+          <tr><th>冷蔵庫を置いた後の通路幅</th><td class="num">約 100cm前後</td><td class="ok">○ 扉を開けても通れる</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lead"><b>床面積で詰まることはありません。</b>止まるとしたら次の3つです。</p>
+
+    <div class="two">
+      <div class="box bad">
+        <b>① 吊戸棚（最も可能性が高い）</b>
+        <ul>
+          <li>吊戸棚の下端は<b>床から140〜150cm</b>が標準</li>
+          <li>冷蔵庫は<b>172.4cm</b>。<b>吊戸棚の下には入りません</b></li>
+          <li>写真ではシンクの上に吊戸棚がありました。<b>吊戸棚のない壁が1面必要</b>です</li>
+        </ul>
+      </div>
+      <div class="box bad">
+        <b>② 搬入経路の開口幅</b>
+        <ul>
+          <li>玄関 → 廊下 → キッチン開口を通す必要がある</li>
+          <li>幅600の冷蔵庫には<b>最低650mm、できれば700mm</b>の開口が要る</li>
+          <li>廊下の<b>曲がり角</b>も要注意。直線幅が足りても曲がれないことがある</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note">
+      <b>③ 放熱スペース</b>：機種にもよりますが上部5cm・背面と側面に数cmが必要です。ぴったり収まる幅だと放熱不足で電気代が上がり、故障の原因にもなります。<b>実寸600に対して、置き場の幅は最低620mm</b>を見てください。
+    </div>
+
+    <div class="flag">
+      <b>内見で聞くこと・測ること</b><br>
+      「冷蔵庫はどこに置く想定ですか。<b>幅600 × 奥行672 × 高さ172.4cm</b> のものを持ち込みます」<br><br>
+      測る：<b>①置き場の幅　②奥行　③吊戸棚の下端までの高さ（または吊戸棚がないこと）　④キッチン開口の幅　⑤玄関ドアの有効幅</b><br>
+      西壁には窓があるので、そちら側には置けません。
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">機材</span>デスク周りの実寸が確定しました</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>もの</th><th>実寸</th><th>配置への影響</th></tr></thead>
+        <tbody>
+          <tr><th><b>チェアマット</b></th><td class="num">幅90 × 奥行140cm・厚4mm</td><td><b>これが壁からの張り出しを決めます</b></td></tr>
+          <tr><th>PCデスク（サンワダイレクト）</th><td class="num">幅100 × 奥行45cm</td><td>直線型。<b>想定より小さく、負担が軽い</b></td></tr>
+          <tr><th><b>メインPC</b></th><td class="num">17インチ ノート</td><td>本体が奥行約28cm。<b>デスク奥行45cmでも手前に置ける</b></td></tr>
+          <tr><th>サブモニター</th><td class="num">アームで設置</td><td>浮かせているため<b>天板幅100cmでも2画面が成立</b></td></tr>
+          <tr><th>外付けキーボード</th><td class="num">—</td><td>ノート手前に配置</td></tr>
+          <tr><th><b>モニターアーム iggy DA112</b></th><td class="num">13〜32型・耐荷重2〜9kg</td><td><b>これがあるから奥行45cmで成立します</b>（下記）</td></tr>
+          <tr><th>電源タップ ELECOM ECT-0620BK</th><td class="num">タワー型・8口＋USB5・ケーブル2m</td><td><b>デスク上に設置済み</b>。<b>壁のコンセントから2m以内</b>にデスクを置く必要</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flag">
+      <b>デスクゾーンは「幅100cm × 奥行140cm」で確保してください。</b><br>
+      幅はデスクの100cmが支配（マットは90cm）。奥行はチェアマットの140cmが支配します（デスク45＋椅子の可動域70＝115cmですが、マットが140cmあるのでこちらに合わせる）。<br>
+      <b>床の占有は1.4㎡。</b>9帖（14.9㎡）の約9%で、想定よりさらに軽くなりました。ただし<b>壁からの張り出しが140cm</b>あるので、部屋の短辺（3.3m）に置くと残りは190cmです。
+    </div>
+
+    <div class="two">
+      <div class="box good">
+        <b>モニターアームを持っているのは正解です</b>
+        <ul>
+          <li><b>サブモニターを直置きすると台座が奥行20〜25cmを食い、ノートPCとキーボードの場所がなくなります</b></li>
+          <li>アームで浮かせることで<b>天板の奥行45cmをノートPCとキーボードに使い切れます</b></li>
+          <li>ノートPCなのでデスクトップより<b>発熱が小さい</b>のも有利。ただしFFストーブから離す原則は変わりません</li>
+        </ul>
+      </div>
+      <div class="box good">
+        <b>今の環境をそのまま移設できます</b>
+        <ul>
+          <li>現在この構成で<b>17インチノートPC＋サブモニター＋外付けキーボード＋電源タップ</b>を載せて運用中。<b>ふらつきなし</b>で実績があります</li>
+          <li>電源タップは<b>デスク上に置いている</b>ので、床のケーブルが減り、幼児が触るリスクも低い</li>
+          <li>つまり<b>作業環境の買い足しはゼロ</b>。新居で必要なのは「置ける壁を確保すること」だけです</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="box bad">
+        <b>壁のコンセント位置だけが未確定です</b>
+        <ul>
+          <li>タップの<b>ケーブルは2m</b>。壁のコンセントからデスクまでが2m以内に収まる壁を選ぶ必要があります</li>
+          <li>床を這わせて延長するのは避けたい。<b>幼児が引っかかります</b></li>
+          <li>内見で<b>コンセントの位置と口数を写真に撮ってください</b>。デスクを置く候補の壁に口があるかが決め手です</li>
+        </ul>
+      </div>
+      <div class="box good">
+        <b>チェアマットは退去費用の保険になります</b>
+        <ul>
+          <li><b>フローリングの傷は経過年数を考慮されません</b>（国交省ガイドライン）。築年数に関係なく借主負担になりうる項目です</li>
+          <li>キャスター付きチェアは床を最も傷めます。<b>マットがあるかないかで退去時の交渉力が変わります</b></li>
+          <li>140×90は大きめですが、この用途では正解です</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>2画面はすでに成立しています。</b>メインが17インチのノートで奥行が浅く、サブはアームで浮かせているため、幅100cmの天板でも収まっています。<b>これ以上増やす場合だけ</b>、幅140cmのデスクへの買い替えを検討してください。その場合はデスクゾーンの幅が140cmになります。
+    </div>
+  </section>
+
+  <section>
+    <h2 class="warn"><span class="n">確定</span>東壁はほぼ使えません</h2>
+    <p class="lead">間取り図の拡大と実際の写真から、壁の使える範囲が確定しました。<b>これが配置を決めます。</b></p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>壁</th><th>内訳</th><th>家具を置けるか</th></tr></thead>
+        <tbody>
+          <tr><th rowspan="3">東壁<br>（洋6.4側）</th><td>北から 0〜187cm</td><td class="ok">○ 唯一の空き（1.87m）</td></tr>
+          <tr><td><b>187〜345cm ＝ 引き戸 約1.6m</b></td><td class="ng">✕ 塞がっている</td></tr>
+          <tr><td><b>345〜450cm ＝ FFストーブ</b></td><td class="ng">✕ 熱源。可燃物を置けない</td></tr>
+          <tr><th>西壁</th><td>4.5m 全部</td><td class="ok">◎ 開口なし。家具の主軸になる</td></tr>
+          <tr><th>北壁</th><td>対面カウンター＋玄関ホールへの開口</td><td class="ng">✕</td></tr>
+          <tr><th>南壁</th><td>掃き出し窓（バルコニー）</td><td class="ng">✕</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stopbox">
+      <b>引き戸が1.6mあるので、洋6.4を寝室にはできません。</b>開ければLD9と一体の空間になり、遮音はほぼゼロです。深夜4時のPC作業と同じ空間で寝ることになります。<b>寝室は洋5.1（玄関側）で確定</b>としてください。洋6.4は納戸兼子どもの遊び部屋にして、引き戸を開けて広く使うのがこの間取りの設計意図です。
+    </div>
+  </section>
+
+  <section>
+    <h2 class="pick"><span class="n">最終案</span>西壁を主軸にする</h2>
+    <p class="lead">東壁で使えるのは北の1.87mだけ。<b>テレビはそこにしか置けません。</b>残りはすべて西壁に寄せます。</p>
+
+    <div class="plan">
+      <svg viewBox="0 0 430 585" width="430" role="img" aria-label="最終案の配置図">
+        <rect class="wallband" x="50" y="30" width="330" height="18"/>
+        <text class="edge" x="175" y="24">対面キッチン K2.5</text>
+        <text class="edge" x="345" y="24">玄関ホール</text>
+        <rect class="room" x="50" y="48" width="330" height="450"/>
+        <rect class="wallband" x="130" y="490" width="180" height="16"/>
+        <text class="edge" x="220" y="522">掃き出し窓／バルコニー</text>
+
+        <rect x="374" y="235" width="12" height="158" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text class="edge" x="408" y="314" transform="rotate(90 408 314)">引き戸 1.6m → 寝室 洋6.4</text>
+
+        <rect class="hot" x="325" y="408" width="55" height="60" rx="3"/>
+        <text class="lbl-s" x="352" y="428">FF</text>
+        <text class="lbl-s" x="352" y="446">ストーブ</text>
+        <path class="danger" d="M225 408 h100 v60" />
+        <text class="lbl-s" x="272" y="440" style="fill:var(--stop)">可燃物なし</text>
+
+        <rect class="furn2" x="155" y="72" width="120" height="75" rx="3"/>
+        <text class="lbl" x="215" y="98">ダイニング</text>
+        <text class="lbl-s" x="215" y="118">120 × 75</text>
+        <rect class="furn2" x="110" y="88" width="40" height="43" rx="3"/>
+        <rect class="furn2" x="281" y="88" width="40" height="43" rx="3"/>
+        <rect class="furn2" x="200" y="153" width="40" height="40" rx="3"/>
+
+        <rect class="furn2" x="345" y="93" width="33" height="80" rx="3"/>
+        <text class="lbl-s" x="361" y="115" transform="rotate(90 361 115)">テレビ台</text>
+        <text class="lbl-s" x="361" y="152" transform="rotate(90 361 152)">80×35</text>
+
+        <rect class="furn2" x="53" y="228" width="80" height="150" rx="3"/>
+        <text class="lbl-s" x="93" y="275" transform="rotate(90 93 275)">ソファ2人掛け</text>
+        <text class="lbl-s" x="93" y="332" transform="rotate(90 93 332)">150 × 80</text>
+
+        <rect class="free" x="53" y="395" width="140" height="100" rx="4" style="stroke:var(--accent)"/>
+        <text class="lbl-s" x="123" y="386" style="fill:var(--accent)">デスクゾーン 幅100 × 奥行140（引き戸の正面を外す）</text>
+        <rect class="furn" x="53" y="400" width="45" height="90" rx="3"/>
+        <text class="lbl-s" x="75" y="425" transform="rotate(90 75 425)">デスク</text>
+        <text class="lbl-s" x="75" y="465" transform="rotate(90 75 465)">100×45</text>
+        <circle class="furn" cx="140" cy="445" r="21"/>
+        <text class="lbl-s" x="140" y="445">椅子</text>
+
+        <rect class="furn3" x="322" y="52" width="53" height="30" rx="3"/>
+        <text class="lbl-s" x="348" y="67">ラック</text>
+
+        <rect class="free" x="205" y="240" width="100" height="150" rx="4" style="stroke:var(--warn)"/>
+        <text class="lbl-s" x="255" y="300" style="fill:var(--warn)">物干し</text>
+        <text class="lbl-s" x="255" y="318" style="fill:var(--warn)">100×150</text>
+        <text class="lbl-s" x="255" y="336" style="fill:var(--warn)">（展開時のみ）</text>
+
+        <text class="dim" x="215" y="552">ソファ前 215cm ／ デスク前 187cm ／ テレビまで約2.5m（斜め）</text>
+      </svg>
+    </div>
+
+    <div class="two">
+      <div class="box good">
+        <b>この配置の利点</b>
+        <ul>
+          <li><b>デスクとストーブが対角</b>。3.3m離れるのでPCに熱が当たりません</li>
+          <li>ソファ前215cm・デスク前187cmと通路が広い</li>
+          <li><b>引き戸の前を塞がない</b>ので、洋6.4への出入りが自由</li>
+          <li>物干しを中央に展開できる（ソファとダイニングの間）</li>
+        </ul>
+      </div>
+      <div class="box bad">
+        <b>妥協した点</b>
+        <ul>
+          <li><b>テレビとソファが真正面ではなく斜め</b>。中心間で約2.5m。32インチなら実用上は問題ありません</li>
+          <li>テレビが東壁の北寄りなので、ダイニングからも見える反面、<b>ソファからは少し見上げる角度</b>になります</li>
+          <li>南の余白は30cmほど。まとまった遊び場は中央のフリースペースが担います</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flag">
+      <b>テレビの高さを調整できる台を選ぶと、斜め視聴のストレスが減ります。</b>ロータイプよりミドルタイプ（高さ40〜50cm）のほうが、ソファに座ったときの目線に合います。
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">別案</span>デスクとソファを横に並べる</h2>
+    <p class="lead">4要素すべてを9帖に収めます。<b>成立しますが余白はほぼありません。</b>テレビの置き方を変えるのが鍵です。</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>要素</th><th>サイズ</th><th>奥行方向の消費</th></tr></thead>
+        <tbody>
+          <tr><th>ダイニング（3人用）</th><td class="num">120 × 75</td><td class="num">75 ＋ 椅子70 ＝ 145cm</td></tr>
+          <tr><th>ソファ（2人掛け）</th><td class="num">150 × 80</td><td class="num">80 ＋ 前方80 ＝ 160cm</td></tr>
+          <tr><th>デスクゾーン</th><td class="num">幅100 × 奥行140</td><td class="num">140cm</td></tr>
+          <tr><th>合計</th><td>—</td><td class="num">445cm</td></tr>
+          <tr><th>LD9の奥行</th><td>—</td><td class="num">約450cm</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <b>445cm は「全部を奥行方向に縦積みした場合」です。実際はソファとデスクを横に並べられます。</b>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>方向</th><th>内訳</th><th>合計</th><th>部屋</th></tr></thead>
+        <tbody>
+          <tr><th>奥行（南北）</th><td>ダイニング145 ＋ ソファの幅150</td><td class="num">295cm</td><td class="num ok">450cm</td></tr>
+          <tr><th>横（東西）</th><td>デスク奥行140 ＋ 通路110 ＋ ソファ奥行80</td><td class="num">330cm</td><td class="num ok">330cm</td></tr>
+          <tr><th>南に残る余白</th><td>物干し・子どもの遊び場</td><td class="num">155 × 330cm ＝ 5.1㎡</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two">
+      <div class="box good">
+        <b>32インチなら小型テレビ台で足ります</b>
+        <ul>
+          <li>32インチの幅は約73cm。<b>幅80 × 奥行35cm の台</b>で十分</li>
+          <li>当初想定の幅140cmから<b>半分以下</b>。壁面の消費が大きく減ります</li>
+          <li><b>突っ張りスタンドも壁掛けも不要</b>です。普通のローボードで収まります</li>
+          <li>相場<b>5,000〜1.5万円</b>。テレビ台にお金をかける必要はありません</li>
+        </ul>
+      </div>
+      <div class="box good">
+        <b>結果として4要素すべて入ります</b>
+        <ul>
+          <li>ダイニング（3人用120cm）</li>
+          <li>ソファ2人掛け（150cm）</li>
+          <li>デスクゾーン（幅100 × 奥行140）</li>
+          <li>テレビ台（80cm）＋ 物干しの展開スペース</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flag">
+      <b>横方向は330cmちょうどで余白ゼロです。</b>デスクの張り出し140cmとソファの奥行80cmを引くと通路は110cm。歩くには十分ですが、<b>ここは実測で確認してください</b>。部屋の実寸が3.2mだと通路が100cmになり、まだ足りますが、3.1mを切ると窮屈になります。
+    </div>
+
+    <h3>配置</h3>
+    <div class="plan">
+      <svg viewBox="0 0 430 585" width="430" role="img" aria-label="確定案の配置図">
+        <rect class="wallband" x="50" y="30" width="330" height="18"/>
+        <text class="edge" x="180" y="24">対面キッチン K2.5</text>
+        <text class="edge" x="345" y="24">玄関ドア</text>
+        <rect class="room" x="50" y="48" width="330" height="450"/>
+        <rect class="wallband" x="130" y="490" width="180" height="16"/>
+        <text class="edge" x="220" y="522">掃き出し窓／バルコニー</text>
+        <rect class="wallband" x="373" y="200" width="14" height="90"/>
+        <text class="edge" x="405" y="248" transform="rotate(90 405 248)">洋6.4</text>
+
+        <rect class="hot" x="55" y="440" width="55" height="48" rx="3"/>
+        <text class="lbl-s" x="82" y="456">FF</text>
+        <text class="lbl-s" x="82" y="473">ストーブ</text>
+        <path class="danger" d="M55 385 h110 v103"/>
+        <text class="lbl-s" x="135" y="415" style="fill:var(--stop)">可燃物なし</text>
+
+        <rect class="furn2" x="150" y="72" width="120" height="75" rx="3"/>
+        <text class="lbl" x="210" y="98">ダイニング</text>
+        <text class="lbl-s" x="210" y="118">120 × 75</text>
+        <rect class="furn2" x="104" y="88" width="40" height="43" rx="3"/>
+        <rect class="furn2" x="276" y="88" width="40" height="43" rx="3"/>
+        <rect class="furn2" x="195" y="153" width="40" height="40" rx="3"/>
+
+        <rect class="free" x="53" y="215" width="140" height="100" rx="4" style="stroke:var(--accent)"/>
+        <text class="lbl-s" x="123" y="206" style="fill:var(--accent)">デスクゾーン 幅100 × 奥行140</text>
+        <rect class="furn" x="53" y="228" width="45" height="75" rx="3"/>
+        <text class="lbl-s" x="76" y="250" transform="rotate(90 76 250)">デスク</text>
+        <text class="lbl-s" x="76" y="288" transform="rotate(90 76 288)">100×45</text>
+        <circle class="furn" cx="140" cy="265" r="21"/>
+        <text class="lbl-s" x="140" y="265">椅子</text>
+
+        <rect class="furn2" x="295" y="310" width="80" height="150" rx="3"/>
+        <text class="lbl-s" x="335" y="360" transform="rotate(90 335 360)">ソファ2人掛け</text>
+        <text class="lbl-s" x="335" y="412" transform="rotate(90 335 412)">150 × 80</text>
+
+        <rect class="furn2" x="185" y="345" width="80" height="80" rx="3"/>
+        <text class="lbl-s" x="225" y="378">ロー</text>
+        <text class="lbl-s" x="225" y="396">テーブル</text>
+
+        <rect class="furn2" x="196" y="212" width="80" height="35" rx="3"/>
+        <text class="lbl-s" x="236" y="223">テレビ台 80×35</text>
+        <text class="lbl-s" x="236" y="238">32インチ</text>
+
+        <rect class="furn3" x="322" y="52" width="53" height="60" rx="3"/>
+        <text class="lbl-s" x="348" y="70">キッチン</text>
+        <text class="lbl-s" x="348" y="88">ラック</text>
+
+        <rect class="free" x="185" y="260" width="100" height="70" rx="4" style="stroke:var(--warn)"/>
+        <text class="lbl-s" x="235" y="286" style="fill:var(--warn)">物干し</text>
+        <text class="lbl-s" x="235" y="304" style="fill:var(--warn)">100×150（展開時）</text>
+      </svg>
+    </div>
+
+    <div class="note">
+      <b>物干しは常設せず、使うときだけ広げます。</b>デスクとソファの間の空きに展開する想定です。畳めば厚み10cm程度なので、壁に立てかけておけます。
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">案A</span>デスクとテレビを向かい合わせ（推奨）</h2>
+    <p class="lead">窓と直交する2つの壁を使い、北をダイニング、南をフリースペースにします。<b>モニターに窓の光が映り込まない</b>のがこの案の核です。</p>
+
+    <div class="plan">
+      <svg viewBox="0 0 430 585" width="430" role="img" aria-label="案Aの配置図">
+        <rect class="wallband" x="50" y="30" width="330" height="18"/>
+        <text class="edge" x="180" y="24">対面キッチン K2.5</text>
+        <text class="edge" x="340" y="24">玄関ドア</text>
+        <rect class="room" x="50" y="48" width="330" height="450"/>
+        <rect class="wallband" x="130" y="490" width="180" height="16"/>
+        <text class="edge" x="220" y="522">掃き出し窓／バルコニー 2.7㎡</text>
+        <rect class="wallband" x="373" y="230" width="14" height="90"/>
+        <text class="edge" x="405" y="278" transform="rotate(90 405 278)">洋6.4</text>
+
+        <rect class="hot" x="55" y="425" width="55" height="48" rx="3"/>
+        <text class="lbl-s" x="82" y="441">FF</text>
+        <text class="lbl-s" x="82" y="458">ストーブ</text>
+        <path class="danger" d="M55 365 h115 v108"/>
+        <text class="lbl-s" x="140" y="400" style="fill:var(--stop)">可燃物</text>
+        <text class="lbl-s" x="140" y="416" style="fill:var(--stop)">を置かない</text>
+
+        <rect class="furn2" x="175" y="80" width="130" height="78" rx="3"/>
+        <text class="lbl" x="240" y="108">ダイニング</text>
+        <text class="lbl-s" x="240" y="128">130 × 78</text>
+        <rect class="furn2" x="128" y="97" width="42" height="45" rx="3"/>
+        <rect class="furn2" x="311" y="97" width="42" height="45" rx="3"/>
+        <rect class="furn2" x="219" y="165" width="42" height="42" rx="3"/>
+
+        <rect class="free" x="53" y="215" width="140" height="100" rx="4" style="stroke:var(--accent)"/>
+        <text class="lbl-s" x="123" y="206" style="fill:var(--accent)">デスクゾーン 幅100 × 奥行140</text>
+        <rect class="furn" x="53" y="225" width="45" height="100" rx="3"/>
+        <text class="lbl-s" x="76" y="252" transform="rotate(90 76 252)">デスク</text>
+        <text class="lbl-s" x="76" y="298" transform="rotate(90 76 298)">100×45</text>
+        <rect class="furn" x="53" y="222" width="140" height="90" rx="2" style="fill:none;stroke-dasharray:4 3"/>
+        <text class="lbl-s" x="160" y="240">マット</text>
+        <text class="lbl-s" x="160" y="256">90×140</text>
+        <circle class="furn" cx="130" cy="265" r="22"/>
+        <text class="lbl-s" x="130" y="265">椅子</text>
+        <rect class="furn2" x="120" y="322" width="16" height="16" rx="2"/>
+        <text class="lbl-s" x="128" y="352">タップ</text>
+
+        <rect class="furn2" x="332" y="330" width="45" height="130" rx="3"/>
+        <text class="lbl-s" x="354" y="372" transform="rotate(90 354 372)">テレビ台</text>
+        <text class="lbl-s" x="354" y="420" transform="rotate(90 354 420)">140cm</text>
+
+        <rect class="furn3" x="55" y="52" width="60" height="68" rx="3"/>
+        <text class="lbl-s" x="85" y="72">冷蔵庫</text>
+        <text class="lbl-s" x="85" y="90">600×672</text>
+
+        <rect class="furn2" x="332" y="140" width="45" height="62" rx="3"/>
+        <text class="lbl-s" x="354" y="160">レンジ</text>
+        <text class="lbl-s" x="354" y="178">ラック</text>
+
+        <rect class="free" x="195" y="255" width="128" height="200" rx="4"/>
+        <text class="lbl" x="259" y="330">フリー</text>
+        <text class="lbl-s" x="259" y="352">子どもの遊び場</text>
+        <text class="lbl-s" x="259" y="370">室内物干し</text>
+        <text class="dim" x="215" y="560">主動線は幅80cm以上。椅子の後ろは70cm空ける</text>
+      </svg>
+    </div>
+
+    <div class="two">
+      <div class="box good">
+        <b>良い点</b>
+        <ul>
+          <li><b>デスクが窓と直交</b>。光が横から入るのでモニターに映り込まない</li>
+          <li><b>ストーブから最も遠い壁</b>。PCに熱が直接当たらない</li>
+          <li>作業中も<b>正面のテレビと子どもの様子が視界に入る</b></li>
+          <li>ダイニングは配膳が最短。南のフリースペースが残る</li>
+        </ul>
+      </div>
+      <div class="box bad">
+        <b>弱い点</b>
+        <ul>
+          <li>デスクの椅子を引くと通路にかかる。<b>デスク前に70cm＋通路80cmが要る</b></li>
+          <li>ソファは置けない</li>
+          <li>テレビとデスクが向かい合うので、<b>作業中にテレビの光が視界に入る</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">案B</span>デスクをカウンター横にまとめる</h2>
+    <p class="lead">デスクを北側に寄せ、配線とコンセントを1箇所に集約します。窓から最も遠いので映り込みはゼロです。</p>
+
+    <div class="plan">
+      <svg viewBox="0 0 430 585" width="430" role="img" aria-label="案Bの配置図">
+        <rect class="wallband" x="50" y="30" width="330" height="18"/>
+        <text class="edge" x="180" y="24">対面キッチン K2.5</text>
+        <text class="edge" x="340" y="24">玄関ドア</text>
+        <rect class="room" x="50" y="48" width="330" height="450"/>
+        <rect class="wallband" x="130" y="490" width="180" height="16"/>
+        <text class="edge" x="220" y="522">掃き出し窓／バルコニー 2.7㎡</text>
+        <rect class="wallband" x="373" y="230" width="14" height="90"/>
+        <text class="edge" x="405" y="278" transform="rotate(90 405 278)">洋6.4</text>
+
+        <rect class="hot" x="55" y="425" width="55" height="48" rx="3"/>
+        <text class="lbl-s" x="82" y="441">FF</text>
+        <text class="lbl-s" x="82" y="458">ストーブ</text>
+        <path class="danger" d="M55 365 h115 v108"/>
+
+        <rect class="furn" x="185" y="52" width="130" height="62" rx="3"/>
+        <text class="lbl-s" x="250" y="72">PCデスク 120 × 60</text>
+        <text class="lbl-s" x="250" y="92">カウンター横に配線集約</text>
+        <circle class="furn" cx="250" cy="152" r="24"/>
+        <text class="lbl-s" x="250" y="152">椅子</text>
+
+        <rect class="furn2" x="150" y="215" width="130" height="78" rx="3"/>
+        <text class="lbl" x="215" y="243">ダイニング</text>
+        <text class="lbl-s" x="215" y="263">130 × 78</text>
+        <rect class="furn2" x="102" y="232" width="42" height="45" rx="3"/>
+        <rect class="furn2" x="286" y="232" width="42" height="45" rx="3"/>
+
+        <rect class="furn2" x="332" y="330" width="45" height="130" rx="3"/>
+        <text class="lbl-s" x="354" y="372" transform="rotate(90 354 372)">テレビ台</text>
+
+        <rect class="furn3" x="55" y="52" width="60" height="68" rx="3"/>
+        <text class="lbl-s" x="85" y="72">冷蔵庫</text>
+        <text class="lbl-s" x="85" y="90">600×672</text>
+
+        <rect class="furn2" x="332" y="140" width="45" height="62" rx="3"/>
+        <text class="lbl-s" x="354" y="160">レンジ</text>
+        <text class="lbl-s" x="354" y="178">ラック</text>
+
+        <rect class="free" x="150" y="330" width="160" height="130" rx="4"/>
+        <text class="lbl-s" x="230" y="385">フリー／物干し</text>
+      </svg>
+    </div>
+
+    <div class="two">
+      <div class="box good">
+        <b>良い点</b>
+        <ul>
+          <li><b>窓から最も遠い＝映り込みゼロ</b>。カラーグレーディングには有利</li>
+          <li>配線とコンセントが1箇所にまとまる</li>
+          <li>ストーブから最遠。熱の影響がない</li>
+        </ul>
+      </div>
+      <div class="box bad">
+        <b>弱い点</b>
+        <ul>
+          <li><b>自然光が入らない</b>。昼でも照明が要る</li>
+          <li><b>キッチンの真横</b>。調理音・においが作業中に来る</li>
+          <li>椅子を引くとダイニングとの通路が狭くなる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">案C</span>ソファも入れる</h2>
+    <p class="lead">くつろぎを足す案。ただし<b>9帖にデスク・ダイニング・ソファの3点は物理的に無理があります。</b>ダイニングを諦める前提です。</p>
+
+    <div class="plan">
+      <svg viewBox="0 0 430 585" width="430" role="img" aria-label="案Cの配置図">
+        <rect class="wallband" x="50" y="30" width="330" height="18"/>
+        <text class="edge" x="180" y="24">対面キッチン K2.5</text>
+        <text class="edge" x="340" y="24">玄関ドア</text>
+        <rect class="room" x="50" y="48" width="330" height="450"/>
+        <rect class="wallband" x="130" y="490" width="180" height="16"/>
+        <text class="edge" x="220" y="522">掃き出し窓／バルコニー 2.7㎡</text>
+        <rect class="wallband" x="373" y="230" width="14" height="90"/>
+        <text class="edge" x="405" y="278" transform="rotate(90 405 278)">洋6.4</text>
+
+        <rect class="hot" x="55" y="425" width="55" height="48" rx="3"/>
+        <text class="lbl-s" x="82" y="441">FF</text>
+        <text class="lbl-s" x="82" y="458">ストーブ</text>
+        <path class="danger" d="M55 365 h115 v108"/>
+
+        <rect class="furn" x="185" y="52" width="130" height="62" rx="3"/>
+        <text class="lbl-s" x="250" y="82">PCデスク 120 × 60</text>
+        <circle class="furn" cx="250" cy="150" r="24"/>
+        <text class="lbl-s" x="250" y="150">椅子</text>
+
+        <rect class="furn2" x="150" y="290" width="175" height="82" rx="3"/>
+        <text class="lbl" x="237" y="320">ソファ</text>
+        <text class="lbl-s" x="237" y="342">175 × 82</text>
+
+        <rect class="furn2" x="332" y="330" width="45" height="130" rx="3"/>
+        <text class="lbl-s" x="354" y="372" transform="rotate(90 354 372)">テレビ台</text>
+
+        <rect class="furn3" x="55" y="52" width="60" height="68" rx="3"/>
+        <text class="lbl-s" x="85" y="72">冷蔵庫</text>
+        <text class="lbl-s" x="85" y="90">600×672</text>
+
+        <rect class="furn2" x="332" y="140" width="45" height="62" rx="3"/>
+        <text class="lbl-s" x="354" y="160">レンジ</text>
+        <text class="lbl-s" x="354" y="178">ラック</text>
+
+        <rect class="furn2" x="150" y="200" width="110" height="60" rx="3"/>
+        <text class="lbl-s" x="205" y="222">小テーブル</text>
+        <text class="lbl-s" x="205" y="240">110 × 60（2人用）</text>
+
+        <text class="dim" x="215" y="560">物干しスペースが残らない</text>
+      </svg>
+    </div>
+
+    <div class="stopbox">
+      <b>この案は勧めません。</b>ダイニングが2人用まで縮んで3人では使えず、<b>室内物干しの場所が消えます</b>。バルコニーが2.7㎡（竿1本分）しかないのに、これは成立しません。ソファを入れるなら、子どもが大きくなって室内干しが減ってからです。
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">寸法</span>守らないと破綻する数値</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>項目</th><th>必要寸法</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><th>主動線の幅</th><td class="num">80cm 以上</td><td>人が荷物を持ってすれ違える最低幅</td></tr>
+          <tr><th><b>デスクゾーン全体</b></th><td class="num">幅100 × 奥行140cm</td><td>幅はデスク100cm、奥行はチェアマット140cmが支配する</td></tr>
+          <tr><th>デスクチェアの後ろ</th><td class="num">70cm</td><td>これを切ると座り降りのたびに通路を塞ぐ</td></tr>
+          <tr><th>ダイニングの椅子を引く</th><td class="num">テーブル端から70cm</td><td>同上</td></tr>
+          <tr><th><b>冷蔵庫の扉の開閉</b></th><td class="num">前方 70cm</td><td>幅600の冷蔵庫は扉が90度以上開く。野菜室の引き出しにも要る</td></tr>
+          <tr><th><b>ストーブからの離隔</b></th><td class="num">前方 100cm・側方 50cm</td><td>可燃物を置かない。<b>PCは熱に弱いので2m以上離す</b></td></tr>
+          <tr><th>テレビとの視聴距離</th><td class="num">1.2m 以上</td><td>32型の場合</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flag">
+      <b>PCの置き場所で最も効くのは「窓との角度」です。</b>窓を背にすると画面に自分と部屋が映り込み、窓を正面にすると逆光で目が疲れます。<b>窓と直交する向き（光が横から入る）が正解</b>で、案Aはこれを満たしています。
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">物干し</span>1000 × 1500 で足りるか</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>項目</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr><th>3人分の1日の洗濯物</th><td class="ok">竿3〜4本ぶん（約3〜4m）確保できる。<b>足ります</b></td></tr>
+          <tr><th>冬に2日分たまった場合</th><td class="ng">やや不足。<b>浴室に補助のポールがあると安心</b></td></tr>
+          <tr><th>設置面積</th><td>1.5㎡。9帖の10%を占めるので<b>常設は避けたい</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flag">
+      <b>サイズは問題ありません。課題は置き場所です。</b>4要素を入れると常設の余地がないので、<b>折りたたみ式にして使うときだけ広げる</b>運用が前提になります。<br><br>
+      <b>洋6.4（納戸にする部屋）に置ければリビングを圧迫しません。</b>ただし札幌では暖房のない部屋だと冬に乾きません。<b>洋6.4に暖房があるか内見で確認してください。</b>FFストーブがリビングだけなら、物干しもリビングに置くしかありません。
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">実測</span>内見で測る7箇所</h2>
+    <p class="lead">これだけ測れば、家具のサイズを確定できます。レーザー距離計があれば5分、メジャーでも15分です。</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>測る場所</th><th>何が決まるか</th></tr></thead>
+        <tbody>
+          <tr><th>1</th><td><b>LDの横幅</b>（壁から壁）</td><td>ダイニングとデスクが並ぶか</td></tr>
+          <tr><th>2</th><td><b>LDの奥行</b>（カウンターから窓）</td><td>フリースペースがどれだけ残るか</td></tr>
+          <tr><th>3</th><td><b>冷蔵庫置場の幅・奥行・高さ制限</b></td><td>600×672×1724が入るか。<b>吊戸棚の有無も。これが最優先</b></td></tr>
+          <tr><th>4</th><td>対面カウンターの幅と高さ</td><td>ダイニングの位置とレンジラックのサイズ</td></tr>
+          <tr><th>5</th><td>掃き出し窓の幅</td><td>カーテンが流用できるか</td></tr>
+          <tr><th>6</th><td><b>ストーブから両側の壁まで</b></td><td>置けない範囲が確定する</td></tr>
+          <tr><th>7</th><td><b>コンセントの位置と、そこからデスク予定地までの距離</b></td><td>電源タップのケーブルが2mなので、届くかどうかが決まる</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      あわせて<b>コンセントの位置と数</b>を写真に撮ってください。編集用PC・モニター・周辺機器で口数を食うので、<b>デスクを置く壁に2口以上あるか</b>は死活問題です。足りなければ電源タップで延長できますが、床を這わせると子どもが引っかかります。
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">買い足し</span>リビングに必要なもの</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>もの</th><th>推奨サイズ</th><th>相場</th></tr></thead>
+        <tbody>
+          <tr><th><b>ガスコンロ（プロパン用）</b></th><td>2〜3口</td><td class="num">2〜5万円</td></tr>
+          <tr><th>ダイニングテーブル</th><td>120 × 75（3人用）</td><td class="num">2〜6万円</td></tr>
+          <tr><th>椅子</th><td>3脚</td><td class="num">1〜3万円</td></tr>
+          <tr><th><b>ソファ（2人掛け）</b></th><td>150 × 80</td><td class="num">3〜8万円</td></tr>
+          <tr><th>テレビ台</th><td>幅80 × 奥行35（32インチ用）</td><td class="num">5,000〜1.5万円</td></tr>
+          <tr><th>キッチンラック（レンジ・炊飯器）</th><td>幅45〜60</td><td class="num">5,000〜2万円</td></tr>
+          <tr><th>室内物干し</th><td>1000 × 1500・折りたたみ式</td><td class="num">3,000〜1万円</td></tr>
+          <tr><th>除湿機／サーキュレーター</th><td>—</td><td class="num">1〜3万円</td></tr>
+          <tr><th>ラグ（床座り・防音）</th><td>—</td><td class="num">5,000〜2万円</td></tr>
+          <tr><th>合計</th><td>—</td><td class="num">10〜28万円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flag">
+      寝室側の<b>寝具3人分</b>も足りていないので、あわせて<b>15〜37万円</b>。これは総額試算（40〜57万円）に入っていません。<b>妻側にダイニングセット・寝具・収納があるか</b>を確認できれば、この額は大きく減ります。
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div>図は 9帖＝約3.3m × 4.5m として作図した目安です。<b>ストーブと洋6.4のドアの位置は写真からの推定を含みます。内見で確認してください。</b></div>
+    <div>エアコンのスリーブ穴の位置によっては、テレビ台と物干しの場所を入れ替える必要があります。</div>
+  </footer>
+
+</div>
