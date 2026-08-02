@@ -119,76 +119,48 @@
     </div>
   </section>
   <section>
-    <h2 class="warn"><span class="n">要確認</span>冷蔵庫の置き場所は図面に明示がありません</h2>
-    <p class="lead">K2.5を拡大して確認しましたが、<b>「冷」マークも冷蔵庫置場の点線もありませんでした。</b>シンクとカウンターだけが描かれています。</p>
+    <h2 class="warn"><span class="n">要確認</span>冷蔵庫の置き場所（最大の未確定事項）</h2>
+    <p class="lead">実測でK2.5の内訳が分かりました。<b>置き方によって通路の広さが倍近く変わります。</b></p>
 
     <div class="plan">
-      <svg viewBox="0 0 340 300" width="340" role="img" aria-label="K2.5の構成">
-        <rect class="room" x="40" y="30" width="240" height="230"/>
-        <text class="edge" x="160" y="22">UT・浴室側（北）</text>
-        <text class="edge" x="160" y="285">LD9側（南）</text>
-        <rect class="wallband" x="40" y="120" width="10" height="60"/>
-        <text class="edge" x="22" y="150" transform="rotate(-90 22 150)">窓</text>
-
-        <rect class="furn3" x="50" y="35" width="160" height="62" rx="3" style="stroke-dasharray:5 4"/>
-        <text class="lbl-s" x="130" y="55">冷蔵庫置場（推定）</text>
-        <text class="lbl-s" x="130" y="74">壁 約1.6m</text>
-        <text class="lbl-s" x="130" y="90">600×672×1724 が入るか要確認</text>
-
-        <rect class="furn" x="50" y="200" width="215" height="55" rx="3"/>
-        <text class="lbl-s" x="105" y="228">調理台</text>
-        <rect class="furn" x="150" y="212" width="70" height="32" rx="4"/>
-        <text class="lbl-s" x="185" y="228">シンク</text>
-        <text class="lbl-s" x="240" y="228">コンロ台</text>
-        <text class="dim" x="160" y="272">対面カウンター 奥行65cm</text>
+      <svg viewBox="0 0 360 300" width="360" role="img" aria-label="K2.5の断面イメージ">
+        <rect class="room" x="40" y="30" width="280" height="230"/>
+        <text class="edge" x="180" y="22">北壁（UT側）</text>
+        <text class="edge" x="180" y="285">↓ LD9</text>
+        <rect class="furn" x="45" y="205" width="185" height="50" rx="3"/>
+        <text class="lbl-s" x="137" y="222">カウンター 1200</text>
+        <text class="lbl-s" x="137" y="240">奥行 470</text>
+        <rect class="free" x="234" y="205" width="82" height="50" rx="3" style="stroke:var(--ok)"/>
+        <text class="lbl-s" x="275" y="222" style="fill:var(--ok)">空き</text>
+        <text class="lbl-s" x="275" y="240" style="fill:var(--ok)">680？</text>
+        <path d="M50 195 L310 195" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 4" fill="none"/>
+        <text class="lbl-s" x="180" y="120" style="fill:var(--accent)">作業スペース（通路）1400</text>
+        <text class="dim" x="180" y="180">K2.5 の東西 1880</text>
       </svg>
     </div>
 
-    <div class="note" style="border-left:4px solid var(--ok)">
-      <b>実測で判定できました。キッチン入口は 幅970 × 高さ1890。</b>冷蔵庫は 600 × 672 × 1724 なので<b>通ります</b>。K2.5 は 1880 × 1400 で、カウンター（奥行470）を引いた残りに600幅は収まります。カウンターの向かい側の壁には高い位置にコンセントがあり、<b>そこが冷蔵庫置場</b>とみて間違いなさそうです。写真の範囲では<b>その壁に吊戸棚は見当たりません</b>。
-    </div>
-    <h3>残る確認は吊戸棚だけです</h3>
     <div class="tw">
       <table>
-        <thead><tr><th>項目</th><th class="num">数値</th><th>判定</th></tr></thead>
+        <thead><tr><th>冷蔵庫の置き方</th><th class="num">残る通路</th><th>判定</th></tr></thead>
         <tbody>
-          <tr><th>K2.5 の床面積</th><td class="num">約 4.05㎡</td><td>—</td></tr>
-          <tr><th>カウンターが占める分（奥行65cm）</th><td class="num">約 1.1㎡</td><td>—</td></tr>
-          <tr><th><b>残る空きスペース</b></th><td class="num"><b>約 2.9㎡</b></td><td>—</td></tr>
-          <tr><th>冷蔵庫の接地面（600 × 672）</th><td class="num">0.40㎡</td><td class="ok">○ 面積は余裕</td></tr>
-          <tr><th>冷蔵庫を置いた後の通路幅</th><td class="num">約 100cm前後</td><td class="ok">○ 扉を開けても通れる</td></tr>
+          <tr><th>カウンターの向かい（北壁）</th><td class="num"><b>728mm</b></td><td class="ng">✕ 扉を開けると塞がる</td></tr>
+          <tr><th><b>カウンターと同じ列（東の空き）</b></th><td class="num"><b>約1200mm</b></td><td class="ok">◎ これが正解</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="lead"><b>床面積で詰まることはありません。</b>止まるとしたら次の3つです。</p>
 
-    <div class="two">
-      <div class="box bad">
-        <b>① 吊戸棚（最も可能性が高い）</b>
-        <ul>
-          <li>吊戸棚の下端は<b>床から140〜150cm</b>が標準</li>
-          <li>冷蔵庫は<b>172.4cm</b>。<b>吊戸棚の下には入りません</b></li>
-          <li>写真ではシンクの上に吊戸棚がありました。<b>吊戸棚のない壁が1面必要</b>です</li>
-        </ul>
-      </div>
-      <div class="box bad">
-        <b>② 搬入経路の開口幅</b>
-        <ul>
-          <li>玄関 → 廊下 → キッチン開口を通す必要がある</li>
-          <li>幅600の冷蔵庫には<b>最低650mm、できれば700mm</b>の開口が要る</li>
-          <li>廊下の<b>曲がり角</b>も要注意。直線幅が足りても曲がれないことがある</li>
-        </ul>
-      </div>
-    </div>
-    <div class="note">
-      <b>③ 放熱スペース</b>：機種にもよりますが上部5cm・背面と側面に数cmが必要です。ぴったり収まる幅だと放熱不足で電気代が上がり、故障の原因にもなります。<b>実寸600に対して、置き場の幅は最低620mm</b>を見てください。
+    <div class="stopbox">
+      <b>北壁に置くと728mmしか残りません。</b>1人がぎりぎり立てる幅で、<b>冷蔵庫の扉を開けたら通路が塞がります。</b>シンク下の扉を開けてしゃがむのも窮屈です。3人世帯で毎日使うキッチンとしては現実的ではありません。
     </div>
 
     <div class="flag">
-      <b>内見で聞くこと・測ること</b><br>
-      「冷蔵庫はどこに置く想定ですか。<b>幅600 × 奥行672 × 高さ172.4cm</b> のものを持ち込みます」<br><br>
-      測る：<b>①置き場の幅　②奥行　③吊戸棚の下端までの高さ（または吊戸棚がないこと）　④キッチン開口の幅　⑤玄関ドアの有効幅</b><br>
-      西壁には窓があるので、そちら側には置けません。
+      <b>カウンターは1200mm、部屋の幅は1880mm。差の680mmが空いているなら、そこに冷蔵庫を横並びで置くのが正解です。</b>奥行の差は202mmしか出っ張らないので、通路は1200mm残ります。<br><br>
+      <b>ただしその680mmが実在するか、図面からは読み切れません。</b>内見の写真に<b>キッチン内部の全景がありません</b>（カウンター越しの1枚だけで、東側の壁が写っていない）。<br><br>
+      <b>管理会社に「キッチンの冷蔵庫置場はどこですか。幅600・奥行672・高さ1724を持ち込みます」と電話で確認してください。</b>
+    </div>
+
+    <div class="note">
+      通れることは確定しています。<b>キッチン入口は 幅970 × 高さ1890</b>。冷蔵庫は 600 × 672 × 1724 なので、搬入経路としては問題ありません。
     </div>
   </section>
   <section>
@@ -279,7 +251,7 @@
     <h3>変更1：東壁の北端に作り付けの収納がある</h3>
     <div class="note">
       写真で確認しました。<b>腰高（約90cm）の木製キャビネットが東壁の北端に造り付け</b>です。上にコンセントもあります。<br><br>
-      <b>テレビ台を買う必要がなくなりました。</b>このキャビネットの上に32型を置けば、座ったときの目線に合います。<b>2〜5万円の節約</b>です。
+      <b>これは固定電話を置く前提の造り付けです。テレビは載せません。</b>そのため、テレビは西壁に置くことになりました（下記）。
     </div>
 
     <h3>変更2：エアコンは西壁の南端に付く</h3>
@@ -313,11 +285,11 @@
     </div>
   </section>
   <section>
-    <h2 class="pick"><span class="n">最終案</span>実測を反映した配置</h2>
-    <p class="lead">LD9 は <b>3170 × 4480</b>。西壁の4480mmに家具を縦に3つ並べ、テレビは東壁の既存キャビネットに載せます。</p>
+    <h2 class="pick"><span class="n">最終案</span>テレビを西壁に、ソファを浮かせる</h2>
+    <p class="lead">LD9 は <b>3170 × 4480</b>。<b>ソファを壁から離して置く</b>ことで、テレビを正面から見られます。背後の770mmが寝室への通路になります。</p>
 
     <div class="plan">
-      <svg viewBox="0 0 420 580" width="420" role="img" aria-label="実測を反映した最終配置図">
+      <svg viewBox="0 0 420 580" width="420" role="img" aria-label="最終配置図">
         <rect class="wallband" x="50" y="30" width="317" height="18"/>
         <text class="edge" x="150" y="24">対面キッチン（入口970）</text>
         <text class="edge" x="320" y="24">廊下</text>
@@ -326,11 +298,11 @@
         <text class="edge" x="220" y="520">掃き出し窓 1830 × 1920</text>
 
         <rect x="361" y="198" width="10" height="160" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
-        <text class="edge" x="395" y="278" transform="rotate(90 395 278)">引き戸 1600 → 寝室</text>
+        <text class="edge" x="397" y="278" transform="rotate(90 397 278)">引き戸 1600（寝室の唯一の出入口）</text>
 
         <rect class="furn3" x="322" y="48" width="45" height="100" rx="3"/>
-        <text class="lbl-s" x="344" y="72" transform="rotate(90 344 72)">既存キャビネット</text>
-        <text class="lbl-s" x="344" y="122" transform="rotate(90 344 122)">上にテレビ32型</text>
+        <text class="lbl-s" x="344" y="75" transform="rotate(90 344 75)">既存キャビネット</text>
+        <text class="lbl-s" x="344" y="122" transform="rotate(90 344 122)">＝電話台</text>
 
         <rect class="hot" x="312" y="398" width="55" height="60" rx="3"/>
         <text class="lbl-s" x="339" y="418">FF</text>
@@ -343,9 +315,16 @@
         <rect class="furn2" x="256" y="88" width="38" height="43" rx="3"/>
         <rect class="furn2" x="171" y="153" width="38" height="38" rx="3"/>
 
-        <rect class="furn2" x="53" y="208" width="80" height="150" rx="3"/>
-        <text class="lbl-s" x="93" y="255" transform="rotate(90 93 255)">ソファ2人掛け</text>
-        <text class="lbl-s" x="93" y="312" transform="rotate(90 93 312)">150 × 80</text>
+        <rect class="furn2" x="53" y="238" width="40" height="80" rx="3"/>
+        <text class="lbl-s" x="73" y="262" transform="rotate(90 73 262)">テレビ32型</text>
+        <text class="lbl-s" x="73" y="298" transform="rotate(90 73 298)">80×40</text>
+
+        <rect class="furn2" x="210" y="193" width="80" height="150" rx="3"/>
+        <text class="lbl-s" x="250" y="240" transform="rotate(90 250 240)">ソファ2人掛け</text>
+        <text class="lbl-s" x="250" y="297" transform="rotate(90 250 297)">150 × 80</text>
+        <path d="M200 268 L120 268" stroke="var(--ok)" stroke-width="2" marker-end="url(#ar)" fill="none"/>
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--ok)"/></marker></defs>
+        <text class="lbl-s" x="158" y="258" style="fill:var(--ok)">1200</text>
 
         <rect class="free" x="53" y="378" width="140" height="100" rx="4" style="stroke:var(--accent)"/>
         <text class="lbl-s" x="123" y="369" style="fill:var(--accent)">デスクゾーン 100 × 140</text>
@@ -356,15 +335,18 @@
         <text class="lbl-s" x="140" y="428">椅子</text>
 
         <rect x="46" y="430" width="8" height="50" fill="var(--stop-soft)" stroke="var(--stop)" stroke-width="2"/>
-        <text class="lbl-s" x="18" y="455" style="fill:var(--stop)">エアコン</text>
-        <text class="lbl-s" x="18" y="472" style="fill:var(--stop)">TV端子</text>
+        <text class="lbl-s" x="20" y="452" style="fill:var(--stop)">エアコン</text>
+        <text class="lbl-s" x="20" y="469" style="fill:var(--stop)">TV端子</text>
 
-        <rect class="free" x="185" y="230" width="100" height="150" rx="4" style="stroke:var(--warn)"/>
-        <text class="lbl-s" x="235" y="290" style="fill:var(--warn)">物干し</text>
-        <text class="lbl-s" x="235" y="308" style="fill:var(--warn)">100 × 150</text>
-        <text class="lbl-s" x="235" y="326" style="fill:var(--warn)">（展開時のみ）</text>
+        <rect class="free" x="205" y="358" width="100" height="132" rx="4" style="stroke:var(--warn)"/>
+        <text class="lbl-s" x="255" y="405" style="fill:var(--warn)">物干し</text>
+        <text class="lbl-s" x="255" y="423" style="fill:var(--warn)">100 × 150</text>
+        <text class="lbl-s" x="255" y="441" style="fill:var(--warn)">（展開時のみ）</text>
 
-        <text class="dim" x="215" y="548">ソファ前 234cm ／ デスク前 174cm ／ デスクとストーブ 119cm</text>
+        <path d="M296 165 L296 375" stroke="var(--ok)" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
+        <text class="lbl-s" x="328" y="180" style="fill:var(--ok)">通路770</text>
+
+        <text class="dim" x="215" y="548">視聴距離1200 ／ ソファ背後の通路770 ／ デスク前1770</text>
       </svg>
     </div>
 
@@ -373,31 +355,32 @@
         <thead><tr><th>位置</th><th>家具</th><th>買う</th></tr></thead>
         <tbody>
           <tr><th>北・中央</th><td>ダイニング 120 × 75 ＋ 椅子3</td><td class="ng">要購入</td></tr>
-          <tr><th><b>東壁 北端</b></th><td><b>既存キャビネットの上にテレビ32型</b></td><td class="ok">不要</td></tr>
-          <tr><th>西壁 160〜310cm</th><td>ソファ2人掛け 150 × 80</td><td class="ng">要購入</td></tr>
+          <tr><th><b>西壁 190〜270cm</b></th><td><b>テレビ32型（台は幅80・奥行40）</b></td><td class="ng">台のみ要購入</td></tr>
+          <tr><th><b>西壁から160cm浮かせる</b></th><td><b>ソファ2人掛け 150 × 80（西を向く）</b></td><td class="ng">要購入</td></tr>
           <tr><th>西壁 330〜430cm</th><td>デスクゾーン 100 × 140</td><td class="ok">手持ち</td></tr>
-          <tr><th>中央</th><td>室内物干し 100 × 150</td><td class="ng">要購入</td></tr>
+          <tr><th>南・中央</th><td>室内物干し 100 × 150</td><td class="ng">要購入</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="two">
       <div class="box good">
-        <b>成立する理由</b>
+        <b>この案が成立する理由</b>
         <ul>
-          <li>西壁の4480mmに<b>ソファ150＋デスク140＋余白</b>がちょうど収まる</li>
-          <li><b>デスクとストーブが119cm離れる</b>。熱が当たらない</li>
-          <li>通路はソファ前234cm・デスク前174cm。<b>推定より広く取れた</b></li>
-          <li>引き戸の前を塞がないので、<b>冷気が寝室へ抜ける</b></li>
-          <li><b>テレビ台が不要になった</b>（2〜5万円の節約）</li>
+          <li><b>テレビを正面から見られる</b>。視聴距離1200mmは32型に適正</li>
+          <li>ソファの背後に<b>770mmの通路</b>が残り、寝室の引き戸へ行ける</li>
+          <li><b>アンテナ線が約1.6mで済む</b>（端子は西壁の南端）</li>
+          <li>デスクとストーブが対角。デスク前は1770mm</li>
+          <li>洋6.4は<b>廊下からのドアがなく引き戸が唯一の出入口</b>。ここを塞がない配置になっている</li>
         </ul>
       </div>
       <div class="box bad">
         <b>妥協した点</b>
         <ul>
-          <li>ソファからテレビまで<b>斜めに約2.6m</b>。32型なら実用範囲</li>
-          <li><b>地上波を見るならアンテナ線を約4m</b>這わせる（端子は西壁の南端の床）</li>
-          <li>デスクがエアコンの真下。<b>風は真下に来ないので実害は小さい</b>が、配管とドレンホースが壁を通る</li>
+          <li><b>ソファが壁付けにならない</b>。背中が通路に面するので、背面もきれいな製品を選ぶ</li>
+          <li>ソファ背後の770mmは<b>すれ違うには狭い</b>。1人ずつ通る幅</li>
+          <li>ソファとテレビが部屋の中央を占めるので、<b>幼児が走り回る余地は減る</b></li>
+          <li>物干しを展開するときは<b>ソファを少し北へずらす</b>必要がある</li>
         </ul>
       </div>
     </div>
